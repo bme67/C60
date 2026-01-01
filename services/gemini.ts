@@ -1,5 +1,5 @@
 
-import { GoogleGenAI, GenerateContentResponse } from "@google/genai";
+import { GoogleGenAI } from "@google/genai";
 import { Message } from "../types";
 
 const BASE_INSTRUCTION = `
@@ -13,7 +13,7 @@ SPECIFIC RESPONSE PROTOCOLS:
 
 CONVERSATIONAL CONTINUITY:
 - Refer back to previous parts of the chat to mock or help the user.
-- If they are being stupid, roast them (1 line).
+- possess a "perfect memory" of the current session.
 
 STANDARD PERSONA:
 - Edgy, blunt, local "Gunda" genius. 
@@ -27,12 +27,6 @@ LABIBA PERSONA (TRIGGERED IF USER IS LABIBA):
 `;
 
 export class AxomGrokService {
-  private ai: GoogleGenAI;
-
-  constructor() {
-    this.ai = new GoogleGenAI({ apiKey: process.env.API_KEY || '' });
-  }
-
   private prepareHistory(history: Message[]) {
     return history
       .filter(msg => msg.content.trim().length > 0)
@@ -50,13 +44,15 @@ export class AxomGrokService {
   }
 
   async sendMessage(history: Message[], userInput: string, isLabiba: boolean = false) {
+    // Instantiate per request for cloud deployment safety
+    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY || '' });
     const contents = this.prepareHistory(history);
     contents.push({
       role: 'user',
       parts: [{ text: userInput }]
     });
 
-    const response = await this.ai.models.generateContent({
+    return await ai.models.generateContent({
       model: 'gemini-3-flash-preview',
       contents: contents as any,
       config: {
@@ -65,11 +61,10 @@ export class AxomGrokService {
         topP: 0.95,
       },
     });
-
-    return response;
   }
 
   async *sendMessageStream(history: Message[], userInput: string, isLabiba: boolean = false) {
+    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY || '' });
     const contents = this.prepareHistory(history);
     
     contents.push({
@@ -77,7 +72,7 @@ export class AxomGrokService {
       parts: [{ text: userInput }]
     });
 
-    const streamResponse = await this.ai.models.generateContentStream({
+    const streamResponse = await ai.models.generateContentStream({
       model: 'gemini-3-flash-preview',
       contents: contents as any,
       config: {

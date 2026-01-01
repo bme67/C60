@@ -1,9 +1,18 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>C60 // CORE</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>C60 // AXOM_GROK</title>
+  <meta name="description" content="Brutalist AI Assistant for the Axom corridor. High-IQ, blunt, and local.">
+  <meta name="theme-color" content="#050505">
+  
+  <!-- Open Graph -->
+  <meta property="og:title" content="C60 // CORE">
+  <meta property="og:description" content="An edgy, blunt AI assistant that speaks Romanized Assamese.">
+  <meta property="og:type" content="website">
+  
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -11,14 +20,14 @@
   <style>
     body {
       font-family: 'JetBrains Mono', monospace;
-      /* Background updated for Dark Mode: Deep obsidian to midnight blue */
-      background: linear-gradient(to bottom, #050505 0%, #0a0a12 40%, #12121a 100%);
+      background: #050505;
       color: #e0e0e0;
       margin: 0;
       overflow: hidden;
+      touch-action: manipulation;
     }
     ::selection {
-      background: rgba(255,255,255,0.1);
+      background: rgba(255,165,0,0.2);
       color: #fff;
     }
     .no-scrollbar::-webkit-scrollbar {
@@ -29,7 +38,6 @@
       scrollbar-width: none;
     }
     
-    /* Dark Fog overlay at the top */
     .fog-overlay {
       position: absolute;
       top: 0;
@@ -45,14 +53,9 @@
       z-index: 5;
     }
 
-    /* Optimized Snow Animation */
     @keyframes snow-fall {
-      0% {
-        transform: translate3d(0, -10vh, 0);
-      }
-      100% {
-        transform: translate3d(var(--drift), 110vh, 0);
-      }
+      0% { transform: translate3d(0, -10vh, 0); }
+      100% { transform: translate3d(var(--drift), 110vh, 0); }
     }
 
     .snowflake {
@@ -67,7 +70,6 @@
       z-index: 50;
     }
 
-    /* Subtle depth for the path - adjusted for dark mode */
     .snow-path {
       position: absolute;
       bottom: 0;
@@ -75,9 +77,17 @@
       transform: translateX(-50%);
       width: 100%;
       height: 100%;
-      background: radial-gradient(ellipse at bottom, rgba(255,255,255,0.05) 0%, rgba(0,0,0,0) 70%);
+      background: radial-gradient(ellipse at bottom, rgba(255,255,255,0.03) 0%, rgba(0,0,0,0) 70%);
       pointer-events: none;
       z-index: 1;
+    }
+
+    @keyframes breathe {
+      0%, 100% { filter: drop-shadow(0 0 5px rgba(255, 165, 0, 0.2)); }
+      50% { filter: drop-shadow(0 0 15px rgba(255, 165, 0, 0.5)); }
+    }
+    .breathe-orange {
+      animation: breathe 4s ease-in-out infinite;
     }
   </style>
 <script type="importmap">
@@ -94,5 +104,6 @@
 </head>
 <body>
   <div id="root"></div>
+  <script type="module" src="index.tsx"></script>
 </body>
 </html>
